@@ -1,7 +1,8 @@
 <script>
-  import { props } from 'svelte';
+  import { afterUpdate } from 'svelte';
   
-  const { participants = [], currentParticipantIndex = 0 } = $props();
+  export let participants = [];
+  export let currentParticipantIndex = 0;
 
   // Reference to the scrollable container
   let participantContainer;
@@ -9,7 +10,7 @@
   let participantElements = [];
 
   // Set up the afterUpdate lifecycle hook to scroll to the current participant
-  $effect(() => {
+  afterUpdate(() => {
     // Only scroll if we have valid elements
     if (participantElements[currentParticipantIndex] && participantContainer) {
       // Scroll the current participant into view with smooth behavior

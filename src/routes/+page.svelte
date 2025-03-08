@@ -4,6 +4,7 @@
   /** @type {import('./$types').PageData} */
   export let data;
   
+  /** @type {number[]} */
   let selectedMembers = [];
   let isLoading = false;
   
@@ -45,11 +46,18 @@
         <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
           <h2 class="font-semibold">Team Members</h2>
           
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-4">
             
             <span class="text-sm text-gray-500">
               {selectedMembers.length} selected
             </span>
+            <button 
+            on:click={startStandup}
+            disabled={selectedMembers.length === 0}
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+          >
+            Start Standup
+          </button>
           </div>
         </div>
         
@@ -70,43 +78,38 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
             {#each data.members as member (member.id)}
               <div 
-          class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-100 flex items-center gap-3 cursor-pointer"
-          on:click={() => toggleMemberSelection(member.id)}
-              >
-              <input 
-          type="checkbox" 
-          id={`member-${member.id}`}
-          checked={selectedMembers.includes(member.id)}
-          class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          on:click|stopPropagation={() => {}} 
-              />
-              
-              <img 
-          src={member.avatar_url} 
-          alt={member.login} 
-          class="h-10 w-10 rounded-full border border-gray-300"
-              />
-              
-              <div class="overflow-hidden">
-          <div class="font-medium truncate">{member.name || member.login}</div>
-          {#if member.name}
-          <div class="text-sm text-gray-500 truncate">@{member.login}</div>
-          {/if}
+                class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-100 flex items-center gap-3 cursor-pointer"
+                on:click={() => toggleMemberSelection(member.id)}
+                on:keydown={(e) => e.key === 'Enter' && toggleMemberSelection(member.id)}
+                role="checkbox"
+                aria-checked={selectedMembers.includes(member.id)}
+                tabindex="0"
+                    >
+                    <input 
+                type="checkbox" 
+                id={`member-${member.id}`}
+                checked={selectedMembers.includes(member.id)}
+                class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                on:click|stopPropagation={() => {}} 
+                    />
+                    
+                    <img 
+                src={member.avatar_url} 
+                alt={member.login} 
+                class="h-10 w-10 rounded-full border border-gray-300"
+                    />
+                    
+                    <div class="overflow-hidden">
+                <div class="font-medium truncate">{member.name || member.login}</div>
+                {#if member.name}
+                <div class="text-sm text-gray-500 truncate">@{member.login}</div>
+                {/if}
               </div>
               </div>
             {/each}
             </div>
         {/if}
         
-        <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
-          <button 
-            on:click={startStandup}
-            disabled={selectedMembers.length === 0}
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Start Standup
-          </button>
-        </div>
       </div>
     </div>
     

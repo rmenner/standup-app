@@ -21,9 +21,6 @@
   let inTriageStep = false;
   let inParkingLotStep = false;
   
-  // Notes for each participant
-  let notes = {};
-  
   // Default time limits (in seconds)
   const defaultTimeLimit = 120; // 2 minutes per person
   const warningTime = 30; // Warning when 30 seconds remaining
@@ -35,15 +32,6 @@
         const storedParticipants = localStorage.getItem('standupParticipants');
         if (storedParticipants) {
           participants = JSON.parse(storedParticipants);
-          
-          // Initialize notes object for all participants
-          participants.forEach(participant => {
-            notes[participant.id] = {
-              yesterday: '',
-              today: '',
-              blockers: ''
-            };
-          });
           
           // Start meeting timer
           meetingStartTime = new Date();
@@ -127,8 +115,7 @@
       date: new Date().toISOString(),
       duration: timeElapsed,
       participants: participants.map(p => ({
-        ...p,
-        notes: notes[p.id]
+        ...p
       }))
     };
     
@@ -171,10 +158,7 @@
     }
   }
   
-  function startTriageStep() {
-    // Save the last participant's notes
-    saveCurrentParticipantNotes();
-    
+  function startTriageStep() {  
     // Set triage mode
     inTriageStep = true;
     
@@ -254,7 +238,6 @@
       <MeetingSummary
         {timeElapsed}
         {participants}
-        {notes}
         onReset={resetStandup}
       />
     </div>
@@ -265,7 +248,6 @@
         {currentParticipantIndex}
         {timeElapsed}
         {currentTimeElapsed}
-        {notes}
         {defaultTimeLimit}
         {warningTime}
         {inTriageStep}

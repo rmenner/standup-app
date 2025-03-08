@@ -3,7 +3,6 @@
   
   export let timeElapsed = 0;
   export let participants = [];
-  export let notes = {};
   export let onReset;
   
   function formatTime(seconds) {
@@ -51,10 +50,9 @@
     <h2 class="text-xl font-semibold mb-4">Standup Participants</h2>
     
     <div class="space-y-2">
-      {#each participants as participant, index}
+      {#each participants as participant}
         <ParticipantCard 
           participant={participant}
-          notes={notes[participant.id]}
         />
       {/each}
     </div>
