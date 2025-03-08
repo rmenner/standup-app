@@ -12,7 +12,6 @@
   export let inParkingLotStep = false;
   export let onNext;
   export let onPrevious;
-  export let onJumpToParticipant = (index) => {};
 </script>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -119,7 +118,7 @@
         />
       </div>
       
-      <ParticipantList {participants} {currentParticipantIndex} {onJumpToParticipant} />
+      <ParticipantList {participants} {currentParticipantIndex} />
 
       <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
         {#if currentParticipantIndex > 0}

@@ -115,11 +115,6 @@
     }
   }
   
-  function onJumpToParticipant(index) {
-      currentParticipantIndex = index;
-      startParticipantTimer();
-  }
-  
   function completeMeeting() {   
     // Clean up timer
     clearInterval(timerInterval);

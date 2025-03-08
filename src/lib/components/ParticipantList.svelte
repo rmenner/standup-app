@@ -1,12 +1,7 @@
 <script>
   export let participants = [];
   export let currentParticipantIndex = 0;
-  export let onJumpToParticipant = (index) => {};
-  
-  // Function to handle clicking on a participant
-  function handleParticipantClick(index) {
-    onJumpToParticipant(index);
-  }
+
 </script>
 
 <div class="mt-4 mb-6">
@@ -19,14 +14,11 @@
   
   <div class="grid gap-2 max-h-[300px] overflow-y-auto pr-1">
     {#each participants as participant, index}
-      <button
-        on:click={() => handleParticipantClick(index)}
-        class="flex items-center p-3 rounded-md text-left transition-colors hover:bg-gray-50 border border-gray-200 cursor-pointer"
+      <div
+        class="flex items-center p-3 rounded-md text-left transition-colors hover:bg-gray-50 border border-gray-200"
         class:bg-blue-50={index === currentParticipantIndex}
         class:border-blue-500={index === currentParticipantIndex}
         class:border-gray-200={index !== currentParticipantIndex}
-        role="button"
-        tabindex="0"
         aria-pressed={index === currentParticipantIndex}
       >
         <div class="flex items-center w-full">
@@ -68,7 +60,7 @@
             </span>
           {/if}
         </div>
-      </button>
+      </div>
     {/each}
   </div>
 </div>
