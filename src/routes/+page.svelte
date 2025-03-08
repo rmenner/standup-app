@@ -18,18 +18,18 @@
   function startStandup() {
     if (selectedMembers.length === 0) return;
     
-    // In a real implementation, we would store the selected members
-    // and redirect to the standup page
-    localStorage.setItem('standupParticipants', JSON.stringify(
-      data.members.filter(member => selectedMembers.includes(member.id))
-    ));
+    // Get the selected members
+    let participantsToSave = data.members.filter(member => selectedMembers.includes(member.id));
+    
+    // Randomize the order of the selected members
+    participantsToSave = [...participantsToSave].sort(() => Math.random() - 0.5);
+    
+    // Store the randomized members and redirect to the standup page
+    localStorage.setItem('standupParticipants', JSON.stringify(participantsToSave));
     
     goto('/standup');
   }
   
-  function getRandomOrder() {
-    selectedMembers = [...selectedMembers].sort(() => Math.random() - 0.5);
-  }
 </script>
 
 <div class="container mx-auto px-4 py-8">
@@ -46,14 +46,6 @@
           <h2 class="font-semibold">Team Members</h2>
           
           <div class="flex items-center gap-2">
-            {#if selectedMembers.length > 0}
-              <button 
-                on:click={getRandomOrder}
-                class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-md hover:bg-indigo-200"
-              >
-                Randomize Order
-              </button>
-            {/if}
             
             <span class="text-sm text-gray-500">
               {selectedMembers.length} selected
