@@ -47,7 +47,6 @@
       <ParticipantList 
         {participants} 
         {currentParticipantIndex} 
-        {onJumpToParticipant} 
       />
       
       <!-- Navigation buttons -->

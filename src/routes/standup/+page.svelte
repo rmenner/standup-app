@@ -270,7 +270,6 @@
         {warningTime}
         {inTriageStep}
         {inParkingLotStep}
-        onJumpToParticipant={onJumpToParticipant}
         onNext={inParkingLotStep ? completeParkingLot : (inTriageStep ? completeTriage : nextParticipant)}
         onPrevious={previousParticipant} />
     </div>
