@@ -1,7 +1,24 @@
 <script>
-  export let participants = [];
-  export let currentParticipantIndex = 0;
+  import { props } from 'svelte';
+  
+  const { participants = [], currentParticipantIndex = 0 } = $props();
 
+  // Reference to the scrollable container
+  let participantContainer;
+  // Array to store references to participant elements
+  let participantElements = [];
+
+  // Set up the afterUpdate lifecycle hook to scroll to the current participant
+  $effect(() => {
+    // Only scroll if we have valid elements
+    if (participantElements[currentParticipantIndex] && participantContainer) {
+      // Scroll the current participant into view with smooth behavior
+      participantElements[currentParticipantIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+  });
 </script>
 
 <div class="mt-4 mb-6">
@@ -12,9 +29,10 @@
     Participants
   </h3>
   
-  <div class="grid gap-2 max-h-[300px] overflow-y-auto pr-1">
+  <div bind:this={participantContainer} class="grid gap-2 max-h-[300px] overflow-y-auto pr-1">
     {#each participants as participant, index}
       <div
+        bind:this={participantElements[index]}
         class="flex items-center p-3 rounded-md text-left transition-colors hover:bg-gray-50 border border-gray-200"
         class:bg-blue-50={index === currentParticipantIndex}
         class:border-blue-500={index === currentParticipantIndex}
