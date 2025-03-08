@@ -11,7 +11,7 @@ export async function load() {
 
     // Configure these variables based on your team
     const org = 'AlaskaAirlines';
-    const team = 'auro';  // Replace with the actual team slug
+    const team = 'auro-team';  // Replace with the actual team slug
     
     // First try to get team members if team name is provided
     let members = [];

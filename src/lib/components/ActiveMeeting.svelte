@@ -32,7 +32,7 @@
   </div>
   
   {#if participants.length > 0 && currentParticipantIndex < participants.length}
-    {#const currentParticipant = participants[currentParticipantIndex]}
+    {@const currentParticipant = participants[currentParticipantIndex]}
       <div class="p-6">
         <!-- Current speaker info -->
         <div class="flex items-center justify-between mb-6">
@@ -81,8 +81,7 @@
             {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Complete Standup'}
           </button>
         </div>
-      </div>
-    {/const}
+    </div>
   {:else}
     <div class="p-6 text-center">
       <p>No participants available. Please return to the home page to select participants.</p>
