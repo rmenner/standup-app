@@ -48,9 +48,9 @@
       </div>
     </div>
     
-    <h2 class="text-xl font-semibold mb-4">Team Updates</h2>
+    <h2 class="text-xl font-semibold mb-4">Standup Participants</h2>
     
-    <div class="space-y-6">
+    <div class="space-y-2">
       {#each participants as participant, index}
         <ParticipantCard 
           participant={participant}

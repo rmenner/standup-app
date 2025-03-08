@@ -1,18 +1,18 @@
 <script>
   import Timer from './Timer.svelte';
-  import ParticipantNotes from './ParticipantNotes.svelte';
+  import ParticipantList from './ParticipantList.svelte';
   
   export let participants = [];
   export let currentParticipantIndex = 0;
   export let timeElapsed = 0;
   export let currentTimeElapsed = 0;
-  export let notes = {};
   export let defaultTimeLimit = 120;
   export let warningTime = 30;
   export let inTriageStep = false;
   export let inParkingLotStep = false;
   export let onNext;
   export let onPrevious;
+  export let onJumpToParticipant = (index) => {};
 </script>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -119,10 +119,8 @@
         />
       </div>
       
-      <!-- Note taking form -->
-      <ParticipantNotes notes={notes[currentParticipant.id]} />
-      
-      <!-- Navigation buttons -->
+      <ParticipantList {participants} {currentParticipantIndex} {onJumpToParticipant} />
+
       <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
         {#if currentParticipantIndex > 0}
           <button 

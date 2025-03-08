@@ -43,3 +43,11 @@
       class="bg-blue-600 h-2" 
       style="width: {inParkingLotStep ? 100 : (inTriageStep ? 100 : (currentParticipantIndex / participants.length) * 100)}%;"
     ></div>
+      <!-- Participant list -->
+      <ParticipantList 
+        {participants} 
+        {currentParticipantIndex} 
+        {onJumpToParticipant} 
+      />
+      
+      <!-- Navigation buttons -->

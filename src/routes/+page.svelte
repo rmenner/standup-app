@@ -67,10 +67,10 @@
             <p>No team members found. Please check your configuration.</p>
           </div>
         {:else}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
             {#each data.members as member (member.id)}
               <div 
-          class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 flex items-center gap-3 cursor-pointer"
+          class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-100 flex items-center gap-3 cursor-pointer"
           on:click={() => toggleMemberSelection(member.id)}
               >
               <input 
@@ -84,7 +84,7 @@
               <img 
           src={member.avatar_url} 
           alt={member.login} 
-          class="h-10 w-10 rounded-full"
+          class="h-10 w-10 rounded-full border border-gray-300"
               />
               
               <div class="overflow-hidden">

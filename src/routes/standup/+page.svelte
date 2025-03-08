@@ -97,8 +97,6 @@
   }
   
   function nextParticipant() {
-    // Save current participant's notes
-    saveCurrentParticipantNotes();
     
     if (currentParticipantIndex < participants.length - 1) {
       currentParticipantIndex++;
@@ -111,23 +109,18 @@
   
   function previousParticipant() {
     if (currentParticipantIndex > 0) {
-      // Save current participant's notes
-      saveCurrentParticipantNotes();
       
       currentParticipantIndex--;
       startParticipantTimer();
     }
   }
   
-  function saveCurrentParticipantNotes() {
-    // Notes are automatically bound using bind:value, no need to do anything here
-    // This function exists as a placeholder for any additional logic needed when saving notes
+  function onJumpToParticipant(index) {
+      currentParticipantIndex = index;
+      startParticipantTimer();
   }
   
-  function completeMeeting() {
-    // Save the last participant's notes
-    saveCurrentParticipantNotes();
-    
+  function completeMeeting() {   
     // Clean up timer
     clearInterval(timerInterval);
     
@@ -282,6 +275,7 @@
         {warningTime}
         {inTriageStep}
         {inParkingLotStep}
+        onJumpToParticipant={onJumpToParticipant}
         onNext={inParkingLotStep ? completeParkingLot : (inTriageStep ? completeTriage : nextParticipant)}
         onPrevious={previousParticipant} />
     </div>
