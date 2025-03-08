@@ -9,6 +9,7 @@
   export let notes = {};
   export let defaultTimeLimit = 120;
   export let warningTime = 30;
+  export let inTriageStep = false;
   export let onNext;
   export let onPrevious;
 </script>
@@ -17,9 +18,13 @@
   <div class="px-6 py-4 bg-blue-600 text-white flex justify-between items-center">
     <div>
       <h1 class="text-2xl font-bold">Standup Meeting</h1>
-      <p class="text-blue-100">
-        Participant {currentParticipantIndex + 1} of {participants.length}
-      </p>
+      {#if !inTriageStep}
+        <p class="text-blue-100">
+          Participant {currentParticipantIndex + 1} of {participants.length}
+        </p>
+      {:else}
+        <p class="text-blue-100">Triage Step</p>
+      {/if}
     </div>
     
     <div class="text-right">
@@ -31,56 +36,82 @@
     </div>
   </div>
   
-  {#if participants.length > 0 && currentParticipantIndex < participants.length}
+  {#if inTriageStep}
+    <!-- Triage step content -->
+    <div class="p-6">
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+        <h2 class="text-xl font-bold mb-2">Triage Time</h2>
+        <p class="mb-2">Now that everyone has shared their updates, let's review and triage any items that need attention:</p>
+        <ul class="list-disc ml-6 mb-4">
+          <li>Review any blockers that were mentioned</li>
+          <li>Discuss any issues that need immediate attention</li>
+          <li>Assign action items as needed</li>
+          <li>Plan any necessary follow-up discussions</li>
+        </ul>
+        <p>Use the GitHub project board to track and update items during triage.</p>
+      </div>
+      
+      <!-- Navigation buttons for triage -->
+      <div class="mt-6 flex justify-end">
+        <button 
+          on:click={onNext}
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+        >
+          Complete Standup
+        </button>
+      </div>
+    </div>
+  {:else if participants.length > 0 && currentParticipantIndex < participants.length}
+    <!-- Regular participant step content -->
     {@const currentParticipant = participants[currentParticipantIndex]}
-      <div class="p-6">
-        <!-- Current speaker info -->
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center">
-            <img 
-              src={currentParticipant.avatar_url} 
-              alt={currentParticipant.login} 
-              class="h-16 w-16 rounded-full mr-4"
-            />
-            <div>
-              <h2 class="text-xl font-bold">
-                {currentParticipant.name || currentParticipant.login}
-              </h2>
-              {#if currentParticipant.name}
-                <div class="text-gray-500">@{currentParticipant.login}</div>
-              {/if}
-            </div>
-          </div>
-          
-          <Timer
-            time={currentTimeElapsed}
-            timeLimit={defaultTimeLimit}
-            warningTime={warningTime}
-            size="large"
+    <div class="p-6">
+      <!-- Current speaker info -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+          <img 
+            src={currentParticipant.avatar_url} 
+            alt={currentParticipant.login} 
+            class="h-16 w-16 rounded-full mr-4"
           />
+          <div>
+            <h2 class="text-xl font-bold">
+              {currentParticipant.name || currentParticipant.login}
+            </h2>
+            {#if currentParticipant.name}
+              <div class="text-gray-500">@{currentParticipant.login}</div>
+            {/if}
+          </div>
         </div>
         
-        <!-- Note taking form -->
-        <ParticipantNotes notes={notes[currentParticipant.id]} />
-        
-        <!-- Navigation buttons -->
-        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
-          {#if currentParticipantIndex > 0}
-            <button 
-              on:click={onPrevious}
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
-            >
-              Previous
-            </button>
-          {/if}
-          
+        <Timer
+          time={currentTimeElapsed}
+          timeLimit={defaultTimeLimit}
+          warningTime={warningTime}
+          size="large"
+        />
+      </div>
+      
+      <!-- Note taking form -->
+      <ParticipantNotes notes={notes[currentParticipant.id]} />
+      
+      <!-- Navigation buttons -->
+      <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+        {#if currentParticipantIndex > 0}
           <button 
-            on:click={onNext}
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+            on:click={onPrevious}
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
           >
-            {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Complete Standup'}
+            Previous
           </button>
-        </div>
+        {/if}
+        
+        <button 
+          on:click={onNext}
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+        >
+          {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Proceed to Triage'}
+        </button>
+      </div>
     </div>
   {:else}
     <div class="p-6 text-center">
@@ -98,7 +129,7 @@
   <div class="bg-gray-100 h-2">
     <div 
       class="bg-blue-600 h-2" 
-      style="width: {(currentParticipantIndex / participants.length) * 100}%;"
+      style="width: {inTriageStep ? 100 : (currentParticipantIndex / participants.length) * 100}%;"
     ></div>
   </div>
 </div>

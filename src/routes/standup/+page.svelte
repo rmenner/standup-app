@@ -18,6 +18,7 @@
   let meetingCompleted = false;
   let githubWindow = null;
   let currentUsername = '';
+  let inTriageStep = false;
   
   // Notes for each participant
   let notes = {};
@@ -102,8 +103,8 @@
       currentParticipantIndex++;
       startParticipantTimer();
     } else {
-      // End of meeting
-      completeMeeting();
+      // Start triage step instead of ending meeting
+      startTriageStep();
     }
   }
   
@@ -180,6 +181,38 @@
       githubWindow = null;
     }
   }
+  
+  function startTriageStep() {
+    // Save the last participant's notes
+    saveCurrentParticipantNotes();
+    
+    // Set triage mode
+    inTriageStep = true;
+    
+    // Navigate GitHub window to the triage URL
+    const triageUrl = 'https://github.com/orgs/AlaskaAirlines/projects/19/views/11';
+    if (!githubWindow || githubWindow.closed) {
+      // Open a new window if it doesn't exist or is closed
+      const windowWidth = Math.round(window.screen.width * 0.65);
+      const windowHeight = Math.round(window.screen.height * 0.65);
+      const left = Math.round((window.screen.width - windowWidth) / 2);
+      const top = Math.round((window.screen.height - windowHeight) / 2);
+      
+      githubWindow = window.open(
+        triageUrl,
+        'GitHub Tasks',
+        `width=${windowWidth},height=${windowHeight},left=${left},top=${top}`
+      );
+    } else {
+      // Update the URL of the existing window
+      githubWindow.location.href = triageUrl;
+    }
+  }
+  
+  function completeTriage() {
+    // Complete the meeting after triage
+    completeMeeting();
+  }
 </script>
 
 <div class="container mx-auto px-4 py-8">
@@ -202,9 +235,9 @@
         {notes}
         {defaultTimeLimit}
         {warningTime}
-        onNext={nextParticipant}
-        onPrevious={previousParticipant}
-      />
+        {inTriageStep}
+        onNext={inTriageStep ? completeTriage : nextParticipant}
+        onPrevious={previousParticipant} />
     </div>
   {/if}
   
