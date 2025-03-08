@@ -38,7 +38,7 @@
     <p class="mt-2 text-gray-600">Select team members for today's standup meeting</p>
   </div>
   
-  <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+  <div class="grid grid-cols-1 gap-8">
     <!-- Main content - team member selection -->
     <div class="md:col-span-2">
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -118,7 +118,7 @@
       </div>
     </div>
     
-    <!-- Sidebar - quick links and tools -->
+    <!-- Sidebar - quick links and tools
     <div>
       <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
         <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
@@ -160,7 +160,7 @@
         </div>
       </div>
       
-      <!-- Recent standup summary -->
+      Recent standup summary
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
           <h2 class="font-semibold">Recent Activity</h2>
@@ -188,6 +188,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
