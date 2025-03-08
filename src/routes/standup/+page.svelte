@@ -16,6 +16,8 @@
   let timeElapsed = 0;
   let currentTimeElapsed = 0;
   let meetingCompleted = false;
+  let githubWindow = null;
+  let currentUsername = '';
   
   // Notes for each participant
   let notes = {};
@@ -47,6 +49,12 @@
           
           // Start first participant's timer
           startParticipantTimer();
+          
+          // Open GitHub window with the first participant's username
+          if (participants.length > 0) {
+            currentUsername = participants[0].login || '';
+            openOrUpdateGithubWindow(currentUsername);
+          }
         } else {
           // No participants selected, redirect back to home
           goto('/');
@@ -60,6 +68,8 @@
   
   onDestroy(() => {
     clearInterval(timerInterval);
+    // Close GitHub window if it exists
+    closeGithubWindow();
   });
   
   function startTimer() {
@@ -76,6 +86,12 @@
   function startParticipantTimer() {
     currentStartTime = new Date();
     currentTimeElapsed = 0;
+    
+    // Update current username and GitHub window when participant changes
+    if (participants[currentParticipantIndex]) {
+      currentUsername = participants[currentParticipantIndex].login || '';
+      openOrUpdateGithubWindow(currentUsername);
+    }
   }
   
   function nextParticipant() {
@@ -137,6 +153,33 @@
     localStorage.removeItem('standupParticipants');
     goto('/');
   }
+  
+  function openOrUpdateGithubWindow(username) {
+    const url = `https://github.com/orgs/AlaskaAirlines/projects/19/views/99?sliceBy%5Bvalue%5D=${username}`;
+    const windowWidth = Math.round(window.screen.width * 0.65);
+    const windowHeight = Math.round(window.screen.height * 0.65);
+    const left = Math.round((window.screen.width - windowWidth) / 2);
+    const top = Math.round((window.screen.height - windowHeight) / 2);
+    
+    if (!githubWindow || githubWindow.closed) {
+      // Open a new window if it doesn't exist or is closed
+      githubWindow = window.open(
+        url,
+        'GitHub Tasks',
+        `width=${windowWidth},height=${windowHeight},left=${left},top=${top}`
+      );
+    } else {
+      // Update the URL of the existing window
+      githubWindow.location.href = url;
+    }
+  }
+  
+  function closeGithubWindow() {
+    if (githubWindow && !githubWindow.closed) {
+      githubWindow.close();
+      githubWindow = null;
+    }
+  }
 </script>
 
 <div class="container mx-auto px-4 py-8">
@@ -164,4 +207,5 @@
       />
     </div>
   {/if}
+  
 </div>
