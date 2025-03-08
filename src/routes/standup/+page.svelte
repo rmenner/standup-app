@@ -19,6 +19,7 @@
   let githubWindow = null;
   let currentUsername = '';
   let inTriageStep = false;
+  let inParkingLotStep = false;
   
   // Notes for each participant
   let notes = {};
@@ -210,7 +211,51 @@
   }
   
   function completeTriage() {
-    // Complete the meeting after triage
+    // Move to the parking lot step after triage
+    startParkingLotStep();
+  }
+  
+  function startParkingLotStep() {
+    // End triage step and start parking lot step
+    inTriageStep = false;
+    inParkingLotStep = true;
+    
+    // List of predefined Unsplash parking lot image URLs
+    const parkingLotImages = [
+      "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1612917231506-a0825d1bc76d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1536585422010-b58dd25bb946?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1570636802145-8cda1335fe54?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1611275360549-3d49c6280669?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1621831955776-6ce162d24933?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1603543518055-e039d61997ef?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1622204861143-604843f106f3?q=80&w=1583&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1539039599462-d7791d6393f7?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1585118213819-c4586ec20965?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    ];
+    
+    // Randomly select one of the parking lot images
+    const parkingLotUrl = parkingLotImages[Math.floor(Math.random() * parkingLotImages.length)];
+    if (!githubWindow || githubWindow.closed) {
+      // Open a new window if it doesn't exist or is closed
+      const windowWidth = Math.round(window.screen.width * 0.65);
+      const windowHeight = Math.round(window.screen.height * 0.65);
+      const left = Math.round((window.screen.width - windowWidth) / 2);
+      const top = Math.round((window.screen.height - windowHeight) / 2);
+      
+      githubWindow = window.open(
+        parkingLotUrl,
+        'GitHub Tasks',
+        `width=${windowWidth},height=${windowHeight},left=${left},top=${top}`
+      );
+    } else {
+      // Update the URL of the existing window
+      githubWindow.location.href = parkingLotUrl;
+    }
+  }
+  
+  function completeParkingLot() {
+    // Complete the meeting after parking lot
     completeMeeting();
   }
 </script>
@@ -236,7 +281,8 @@
         {defaultTimeLimit}
         {warningTime}
         {inTriageStep}
-        onNext={inTriageStep ? completeTriage : nextParticipant}
+        {inParkingLotStep}
+        onNext={inParkingLotStep ? completeParkingLot : (inTriageStep ? completeTriage : nextParticipant)}
         onPrevious={previousParticipant} />
     </div>
   {/if}
