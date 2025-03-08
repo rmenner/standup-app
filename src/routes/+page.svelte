@@ -1,26 +1,28 @@
 <script>
   import { goto } from '$app/navigation';
+  import TeamMemberSelector from '$lib/components/TeamMemberSelector.svelte';
   
   /** @type {import('./$types').PageData} */
   export let data;
+  
+  // Save all team members to localStorage when they're loaded
+  $: if (data.members && data.members.length > 0) {
+    localStorage.setItem('allTeamMembers', JSON.stringify(data.members));
+  }
   
   /** @type {number[]} */
   let selectedMembers = [];
   let isLoading = false;
   
-  function toggleMemberSelection(memberId) {
-    if (selectedMembers.includes(memberId)) {
-      selectedMembers = selectedMembers.filter(id => id !== memberId);
-    } else {
-      selectedMembers = [...selectedMembers, memberId];
-    }
+  function handleSelectionChange(event) {
+    selectedMembers = event.detail.selectedIds;
   }
   
-  function startStandup() {
+  function handleStartStandup(event) {
     if (selectedMembers.length === 0) return;
     
-    // Get the selected members
-    let participantsToSave = data.members.filter(member => selectedMembers.includes(member.id));
+    // Get the selected members from the event
+    let participantsToSave = event.detail.selectedMembers;
     
     // Randomize the order of the selected members
     participantsToSave = [...participantsToSave].sort(() => Math.random() - 0.5);
@@ -42,75 +44,14 @@
   <div class="grid grid-cols-1 gap-8">
     <!-- Main content - team member selection -->
     <div class="md:col-span-2">
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-          <h2 class="font-semibold">Team Members</h2>
-          
-          <div class="flex items-center gap-4">
-            
-            <span class="text-sm text-gray-500">
-              {selectedMembers.length} selected
-            </span>
-            <button 
-            on:click={startStandup}
-            disabled={selectedMembers.length === 0}
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-          >
-            Start Standup
-          </button>
-          </div>
-        </div>
-        
-        {#if data.error}
-          <div class="p-4 bg-red-50 border-l-4 border-red-500">
-            <p class="text-red-700">{data.error}</p>
-            <p class="mt-2 text-sm text-red-600">Please check your GitHub token in the .env file.</p>
-          </div>
-        {:else if data.loading || isLoading}
-          <div class="p-8 text-center">
-            <p>Loading team members...</p>
-          </div>
-        {:else if data.members.length === 0}
-          <div class="p-8 text-center">
-            <p>No team members found. Please check your configuration.</p>
-          </div>
-        {:else}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
-            {#each data.members as member (member.id)}
-              <div 
-                class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-100 flex items-center gap-3 cursor-pointer"
-                on:click={() => toggleMemberSelection(member.id)}
-                on:keydown={(e) => e.key === 'Enter' && toggleMemberSelection(member.id)}
-                role="checkbox"
-                aria-checked={selectedMembers.includes(member.id)}
-                tabindex="0"
-                    >
-                    <input 
-                type="checkbox" 
-                id={`member-${member.id}`}
-                checked={selectedMembers.includes(member.id)}
-                class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                on:click|stopPropagation={() => {}} 
-                    />
-                    
-                    <img 
-                src={member.avatar_url} 
-                alt={member.login} 
-                class="h-10 w-10 rounded-full border border-gray-300"
-                    />
-                    
-                    <div class="overflow-hidden">
-                <div class="font-medium truncate">{member.name || member.login}</div>
-                {#if member.name}
-                <div class="text-sm text-gray-500 truncate">@{member.login}</div>
-                {/if}
-              </div>
-              </div>
-            {/each}
-            </div>
-        {/if}
-        
-      </div>
+      <TeamMemberSelector 
+        members={data.members}
+        initialSelectedIds={selectedMembers}
+        loading={data.loading || isLoading}
+        error={data.error || ''}
+        on:selectionChange={handleSelectionChange}
+        on:startStandup={handleStartStandup}
+      />
     </div>
     
     <!-- Sidebar - quick links and tools

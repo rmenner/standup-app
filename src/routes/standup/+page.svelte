@@ -9,6 +9,7 @@
   
   // State management
   let participants = [];
+  let availableMembers = [];
   let currentParticipantIndex = 0;
   let meetingStartTime = null;
   let currentStartTime = null;
@@ -32,6 +33,12 @@
         const storedParticipants = localStorage.getItem('standupParticipants');
         if (storedParticipants) {
           participants = JSON.parse(storedParticipants);
+          
+          // Get all available team members from localStorage
+          const storedMembers = localStorage.getItem('allTeamMembers');
+          if (storedMembers) {
+            availableMembers = JSON.parse(storedMembers);
+          }
           
           // Start meeting timer
           meetingStartTime = new Date();
@@ -128,9 +135,21 @@
   function resetStandup() {
     // Clear the stored participants and go back to home
     localStorage.removeItem('standupParticipants');
+    localStorage.removeItem('standupParticipants');
     goto('/');
   }
   
+  /**
+   * Handle participants being updated (e.g., when late participants are added)
+   * @param {CustomEvent<{participants: Array}>} event
+   */
+  function handleParticipantsUpdated(event) {
+    // Update the participants array with the new list
+    participants = event.detail.participants;
+    
+    // Update localStorage with the new participants list
+    localStorage.setItem('standupParticipants', JSON.stringify(participants));
+  }
   function openOrUpdateGithubWindow(username) {
     const url = `https://github.com/orgs/AlaskaAirlines/projects/19/views/99?sliceBy%5Bvalue%5D=${username}`;
     const windowWidth = Math.round(window.screen.width * 0.65);
@@ -252,8 +271,10 @@
         {warningTime}
         {inTriageStep}
         {inParkingLotStep}
+        {availableMembers}
         onNext={inParkingLotStep ? completeParkingLot : (inTriageStep ? completeTriage : nextParticipant)}
-        onPrevious={previousParticipant} />
+        onPrevious={previousParticipant}
+        on:participantsUpdated={handleParticipantsUpdated} />
     </div>
   {/if}
   

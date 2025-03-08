@@ -1,6 +1,8 @@
 <script>
   import Timer from './Timer.svelte';
   import ParticipantList from './ParticipantList.svelte';
+  import LateParticipantModal from './LateParticipantModal.svelte';
+  import { createEventDispatcher } from 'svelte';
   
   export let participants = [];
   export let currentParticipantIndex = 0;
@@ -12,6 +14,39 @@
   export let inParkingLotStep = false;
   export let onNext;
   export let onPrevious;
+  export let availableMembers = []; // All team members that can be added as late participants
+  
+  const dispatch = createEventDispatcher();
+  
+  let isLateParticipantModalOpen = false;
+  
+  // Get all participant IDs that are already in the meeting
+  $: alreadySelectedIds = participants.map(participant => participant.id);
+  
+  function openLateParticipantModal() {
+    isLateParticipantModalOpen = true;
+  }
+  
+  function closeLateParticipantModal() {
+    isLateParticipantModalOpen = false;
+  }
+  
+  function handleAddParticipants(event) {
+    const lateParticipants = event.detail;
+    
+    if (lateParticipants && lateParticipants.length > 0) {
+      // Create a new participants array with the late participants added
+      const updatedParticipants = [...participants, ...lateParticipants];
+      
+      // Dispatch an event to notify parent component of the change
+      dispatch('participantsUpdated', {
+        participants: updatedParticipants
+      });
+      
+      // Update the local participants array
+      participants = updatedParticipants;
+    }
+  }
 </script>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -29,7 +64,13 @@
       {/if}
     </div>
     
-    <div class="text-right">
+    <div class="flex items-center gap-4">
+      <button
+        on:click={openLateParticipantModal}
+        class="px-3 py-1 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"
+      >
+        Add
+      </button>
       <Timer 
         time={timeElapsed} 
         label="Meeting Duration:" 
@@ -121,21 +162,23 @@
       <ParticipantList {participants} {currentParticipantIndex} />
 
       <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
-        {#if currentParticipantIndex > 0}
+        <div class="flex flex-col sm:flex-row gap-3">
+          {#if currentParticipantIndex > 0}
+            <button 
+              on:click={onPrevious}
+              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
+            >
+              Previous
+            </button>
+          {/if}
+          
           <button 
-            on:click={onPrevious}
-            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
+            on:click={onNext}
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
           >
-            Previous
+            {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Proceed to Triage'}
           </button>
-        {/if}
-        
-        <button 
-          on:click={onNext}
-          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
-        >
-          {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Proceed to Triage'}
-        </button>
+        </div>
       </div>
     </div>
   {:else}
@@ -158,3 +201,12 @@
     ></div>
   </div>
 </div>
+
+<!-- Late Participant Modal -->
+<LateParticipantModal
+  isOpen={isLateParticipantModalOpen}
+  members={availableMembers}
+  alreadySelectedIds={alreadySelectedIds}
+  on:close={closeLateParticipantModal}
+  on:addParticipants={handleAddParticipants}
+/>
