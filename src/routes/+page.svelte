@@ -75,32 +75,35 @@
             <p>No team members found. Please check your configuration.</p>
           </div>
         {:else}
-          <ul class="divide-y divide-gray-200">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {#each data.members as member (member.id)}
-              <li class="p-4 hover:bg-gray-50 flex items-center gap-3">
-                <input 
-                  type="checkbox" 
-                  id={`member-${member.id}`}
-                  checked={selectedMembers.includes(member.id)}
-                  on:change={() => toggleMemberSelection(member.id)}
-                  class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                
-                <img 
-                  src={member.avatar_url} 
-                  alt={member.login} 
-                  class="h-10 w-10 rounded-full"
-                />
-                
-                <div>
-                  <div class="font-medium">{member.name || member.login}</div>
-                  {#if member.name}
-                    <div class="text-sm text-gray-500">@{member.login}</div>
-                  {/if}
-                </div>
-              </li>
+              <div 
+          class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 flex items-center gap-3 cursor-pointer"
+          on:click={() => toggleMemberSelection(member.id)}
+              >
+              <input 
+          type="checkbox" 
+          id={`member-${member.id}`}
+          checked={selectedMembers.includes(member.id)}
+          class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          on:click|stopPropagation={() => {}} 
+              />
+              
+              <img 
+          src={member.avatar_url} 
+          alt={member.login} 
+          class="h-10 w-10 rounded-full"
+              />
+              
+              <div class="overflow-hidden">
+          <div class="font-medium truncate">{member.name || member.login}</div>
+          {#if member.name}
+          <div class="text-sm text-gray-500 truncate">@{member.login}</div>
+          {/if}
+              </div>
+              </div>
             {/each}
-          </ul>
+            </div>
         {/if}
         
         <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
