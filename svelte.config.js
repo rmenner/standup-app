@@ -1,16 +1,10 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-netlify';
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
+export default {
 	kit: {
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: 'index.html',
-			precompress: true
-		}),
-	},
-	extensions: ['.svelte', '.svx']
+			edge: false,
+			split: false
+		})
+	}
 };
-
-export default config;
