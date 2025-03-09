@@ -1,14 +1,14 @@
-# Auro Team Standup Manager
+# Standup Manager
 
-A SvelteKit application designed to streamline daily standup meetings for the Auro Design System team at Alaska Airlines. This tool allows team members to conduct efficient standups with time tracking and meeting notes.
+A SvelteKit application designed to streamline daily standup meetings for the Auro Design System team at Alaska Airlines. This tool allows team members to conduct efficient standups with time tracking and export a summary for easy note takeing.
 
 ## Features
 
 - Fetch team members directly from GitHub's API
 - Select participants for standup meetings
 - Time tracking for individual speakers and overall meeting duration
-- Structured standup format (yesterday's work, today's plan, blockers)
-- Meeting summary with all participant notes
+- Structured standup format (updates, triage, parking lot)
+- Meeting summary with markdown export
 
 ## Getting Started
 
@@ -22,8 +22,8 @@ A SvelteKit application designed to streamline daily standup meetings for the Au
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd auro-standup
+git clone https://github.com/rmenner/standup-app
+cd standup-app
 ```
 
 2. Install dependencies
@@ -43,21 +43,9 @@ npm run dev
 
 ## Usage
 
-1. On the homepage, you'll see team members fetched from GitHub
-2. Select the members who will participate in the standup
-3. Click "Start Meeting" to begin the standup
-4. For each team member, record their updates about:
-   - What they worked on yesterday
-   - What they plan to work on today
-   - Any blockers they're facing
-5. After all members have spoken, a summary will be displayed
-
-## Customization
-
-- You can modify the GitHub organization and team name in `src/routes/+page.server.js`
-- Default time limits per person can be adjusted
-- UI styling is done with TailwindCSS and can be customized in the tailwind.config.js file
-
-## License
-
-[Add license information here]
+1. On the homepage, browse team members automatically fetched from GitHub
+2. Select participants for the current standup meeting
+3. Click "Start Meeting" to begin the session
+4. Each team member gets a 2-minute timer for updates
+5. After all individual updates, triage issues and parking lot items can be addressed
+6. When complete, review and export a comprehensive meeting summary
