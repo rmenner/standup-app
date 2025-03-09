@@ -1,9 +1,12 @@
 <script>
   import ParticipantCard from './ParticipantCard.svelte';
+  import MarkdownExportModal from './MarkdownExportModal.svelte';
   
   export let timeElapsed = 0;
   export let participants = [];
   export let onReset;
+  
+  let showExportModal = false;
   
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -66,7 +69,7 @@
       </button>
       
       <button 
-        on:click={() => window.print()}
+        on:click={() => showExportModal = true}
         class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
       >
         Export Summary
@@ -74,3 +77,9 @@
     </div>
   </div>
 </div>
+
+<MarkdownExportModal
+  bind:isOpen={showExportModal}
+  {timeElapsed}
+  {participants}
+/>
