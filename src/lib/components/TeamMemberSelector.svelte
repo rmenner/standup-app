@@ -62,7 +62,7 @@
   }
 </script>
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden">
+<div class="overflow-hidden @container min-w-80">
   {#if showHeader}
     <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
       <h2 class="font-semibold">Team Members</h2>
@@ -98,7 +98,7 @@
       <p>No team members found. Please check your configuration.</p>
     </div>
   {:else}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4">
+    <div class="grid grid-cols-1 @2xl:grid-cols-2 @4xl:grid-cols-3 gap-2">
       {#each members as member (member.id)}
         <div 
           class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-100 flex items-center gap-3 cursor-pointer"

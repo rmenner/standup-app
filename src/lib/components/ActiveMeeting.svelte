@@ -64,18 +64,26 @@
       {/if}
     </div>
     
-    <div class="flex items-center gap-4">
-      <button
-        on:click={openLateParticipantModal}
-        class="px-3 py-1 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"
-      >
-        Add
-      </button>
-      <Timer 
-        time={timeElapsed} 
-        label="Meeting Duration:" 
-        size="normal"
-      />
+    <div class="grid grid-cols-1 gap-2">
+     
+      {#if !inTriageStep && !inParkingLotStep}
+      <div class="grid-cols-1 flex justify-end">
+        <button
+          on:click={openLateParticipantModal}
+          class="px-3 py-1 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 cursor-pointer"
+        >
+          Add Participant
+        </button>
+      </div>
+      {/if}
+      <div class="grid-cols-1">
+        <Timer 
+          time={timeElapsed} 
+          label="Meeting Duration:" 
+          size="normal"
+        />
+      </div>
+      
     </div>
   </div>
   
@@ -84,23 +92,21 @@
     <div class="p-6">
       <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
         <h2 class="text-xl font-bold mb-2">Triage Time</h2>
-        <p class="mb-2">Now that everyone has shared their updates, let's review and triage any items that need attention:</p>
+        <p class="mb-2">Now that everyone has shared their updates, let's review the triage GitHub issues:</p>
         <ul class="list-disc ml-6 mb-4">
-          <li>Review any blockers that were mentioned</li>
-          <li>Discuss any issues that need immediate attention</li>
-          <li>Assign action items as needed</li>
-          <li>Plan any necessary follow-up discussions</li>
+          <li>Assign issues to team members</li>
+          <li>Discuss priority and severity of issues</li>
+          <li>Identify blockers and dependencies</li>
         </ul>
-        <p>Use the GitHub project board to track and update items during triage.</p>
       </div>
       
       <!-- Navigation buttons for triage -->
       <div class="mt-6 flex justify-end">
         <button 
           on:click={onNext}
-          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
         >
-          Parking Lot
+          Proceed to Parking Lot
         </button>
       </div>
     </div>
@@ -123,7 +129,7 @@
       <div class="mt-6 flex justify-end">
         <button 
           on:click={onNext}
-          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
         >
           Complete Meeting
         </button>
@@ -163,18 +169,18 @@
 
       <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
         <div class="flex flex-col sm:flex-row gap-3">
-          {#if currentParticipantIndex > 0}
-            <button 
-              on:click={onPrevious}
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
-            >
-              Previous
-            </button>
-          {/if}
+
+          <button 
+            on:click={onPrevious}
+            disabled={currentParticipantIndex <= 0}
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
           
           <button 
             on:click={onNext}
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
           >
             {currentParticipantIndex < participants.length - 1 ? 'Next' : 'Proceed to Triage'}
           </button>
@@ -186,7 +192,7 @@
       <p>No participants available. Please return to the home page to select participants.</p>
       <button 
         on:click={() => import('$app/navigation').goto('/')}
-        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
       >
         Return to Home
       </button>

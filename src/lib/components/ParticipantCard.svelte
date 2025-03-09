@@ -2,7 +2,7 @@
   export let participant;
 </script>
 
-<div class="border border-gray-200 rounded-lg p-4">
+<div class="border border-gray-200 rounded-lg p-4 bg-white">
   <div class="flex items-center">
     <img 
       src={participant.avatar_url} 

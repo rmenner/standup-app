@@ -30,7 +30,7 @@
       <div class="mt-6 flex justify-end">
         <button 
           on:click={onNext}
-          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
         >
           Complete Meeting
         </button>

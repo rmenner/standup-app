@@ -17,9 +17,6 @@
   /** @type {string} */
   export let title = "";
   
-  /** @type {string} */
-  export let width = "max-w-md";
-  
   /** @type {boolean} */
   export let closeOnBackdropClick = true;
   
@@ -96,7 +93,7 @@
     transition:fade={{ duration: 150 }}
   >
     <div
-      class="relative bg-white rounded-lg shadow-xl {width} max-h-[90vh] overflow-y-auto flex flex-col"
+      class="relative bg-white rounded-lg shadow-xl w-4xl max-h-[90vh] overflow-y-auto flex flex-col max-w-[90vw]"
       role="dialog"
       aria-modal="true"
       bind:this={modalElement}
@@ -104,7 +101,7 @@
       transition:scale={{ start: 0.95, duration: 150 }}
     >
       {#if title || showCloseButton}
-        <div class="flex items-center justify-between p-4 border-b">
+        <div class="flex items-center justify-between p-4 border-b border-gray-300 ">
           {#if title}
             <h3 class="text-lg font-semibold text-gray-900">{title}</h3>
           {:else}
@@ -114,7 +111,7 @@
           {#if showCloseButton}
             <button
               type="button"
-              class="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+              class="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full cursor-pointer"
               on:click={closeModal}
               aria-label="Close modal"
             >
@@ -126,16 +123,16 @@
         </div>
       {/if}
       
-      <div class="p-4 flex-1 overflow-y-auto">
+      <div class="p-4 flex-1 overflow-x-auto max-h-[600px] bg-gray-100">
         <slot />
       </div>
       
-      <div class="p-4 border-t">
+      <div class="p-4 border-t border-gray-300 ">
         <slot name="footer">
           <div class="flex justify-end space-x-2">
             <button
               type="button"
-              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               on:click={closeModal}
             >
               Close

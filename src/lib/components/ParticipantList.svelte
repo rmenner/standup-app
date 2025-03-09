@@ -23,18 +23,18 @@
 </script>
 
 <div class="mt-4 mb-6">
-  <h3 class="text-lg font-semibold mb-3 flex items-center">
+  <!-- <h3 class="text-lg font-semibold mb-3 flex items-center">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
       <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
     </svg>
     Participants
-  </h3>
+  </h3> -->
   
-  <div bind:this={participantContainer} class="grid gap-2 max-h-[300px] overflow-y-auto pr-1">
+  <div bind:this={participantContainer} class="grid gap-2 max-h-[300px] overflow-y-auto rounded-lg shadow-md p-5 bg-gray-50">
     {#each participants as participant, index}
       <div
         bind:this={participantElements[index]}
-        class="flex items-center p-3 rounded-md text-left transition-colors hover:bg-gray-50 border border-gray-200"
+        class="flex items-center p-3 rounded-md text-left transition-colors border border-gray-200 bg-white"
         class:bg-blue-50={index === currentParticipantIndex}
         class:border-blue-500={index === currentParticipantIndex}
         class:border-gray-200={index !== currentParticipantIndex}

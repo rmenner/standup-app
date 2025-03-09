@@ -66,36 +66,34 @@
   }
 </script>
 
-<Modal isOpen={isOpen} on:close={closeModal} title="Add Late Participants">
-  {#if availableMembers.length === 0}
-    <p class="text-gray-500 text-center py-4">
-      All team members are already in the meeting.
-    </p>
-  {:else}
-    <p class="mb-4 text-gray-700">
-      Select team members who are joining the meeting late:
-    </p>
-    
-    <TeamMemberSelector 
-      members={availableMembers}
-      initialSelectedIds={selectedMemberIds}
-      {loading}
-      {error}
-      showHeader={false}
-      showStartButton={false}
-      on:selectionChange={handleSelectionChange}
-    />
-  {/if}
+<Modal isOpen={isOpen} on:close={closeModal} title="Add Participants">
+  <div>
+    {#if availableMembers.length === 0}
+      <p class="text-gray-500 text-center py-4">
+        All team members are already in the meeting.
+      </p>
+    {:else}
+     
+      <TeamMemberSelector 
+        members={availableMembers}
+        initialSelectedIds={selectedMemberIds}
+        {loading}
+        {error}
+        showHeader={false}
+        showStartButton={false}
+        on:selectionChange={handleSelectionChange}
+      />
+    {/if}
+  </div>
   <div slot="footer" class="flex justify-end space-x-2">
     <button 
-      class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+      class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors cursor-pointer"
       on:click={closeModal}
     >
       Cancel
     </button>
-    
     <button 
-      class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       disabled={selectedMemberIds.length === 0}
       on:click={addLateParticipants}
     >

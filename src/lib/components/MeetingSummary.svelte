@@ -49,7 +49,7 @@
     
     <h2 class="text-xl font-semibold mb-4">Standup Participants</h2>
     
-    <div class="space-y-2">
+    <div class="space-y-2 grid gap-2 max-h-[300px] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto rounded-lg shadow-md p-5 bg-gray-50">
       {#each participants as participant}
         <ParticipantCard 
           participant={participant}
@@ -60,14 +60,14 @@
     <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-end">
       <button 
         on:click={onReset}
-        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300"
+        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 cursor-pointer"
       >
         Start New Standup
       </button>
       
       <button 
         on:click={() => window.print()}
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 cursor-pointer"
       >
         Export Summary
       </button>
