@@ -49,7 +49,7 @@
   }
 </script>
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden">
+<div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
   <div class="px-6 py-4 bg-blue-600 text-white flex justify-between items-center">
     <div>
       <h1 class="text-2xl font-bold">Standup Meeting</h1>

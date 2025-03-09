@@ -30,7 +30,7 @@
     Participants
   </h3> -->
   
-  <div bind:this={participantContainer} class="grid gap-2 max-h-[300px] overflow-y-auto rounded-lg shadow-md p-5 bg-gray-50">
+  <div bind:this={participantContainer} class="grid gap-2 max-h-[300px] overflow-y-auto rounded-lg shadow-md p-5 bg-gray-100 border border-gray-200">
     {#each participants as participant, index}
       <div
         bind:this={participantElements[index]}

@@ -15,7 +15,7 @@
   }
 </script>
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden">
+<div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
   <div class="px-6 py-4 bg-blue-600 text-white">
     <h1 class="text-2xl font-bold">Standup Summary</h1>
     <p class="text-blue-100">
@@ -25,24 +25,24 @@
   
   <div class="p-6">
     <div class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-      <div class="bg-gray-50 p-4 rounded-lg text-center">
+      <div class="bg-gray-100 border border-gray-200 p-4 rounded-lg text-center">
         <div class="text-2xl font-bold text-blue-600">{formatTime(timeElapsed)}</div>
         <div class="text-sm text-gray-500">Total Time</div>
       </div>
       
-      <div class="bg-gray-50 p-4 rounded-lg text-center">
+      <div class="bg-gray-100 border border-gray-200 p-4 rounded-lg text-center">
         <div class="text-2xl font-bold text-green-600">{participants.length}</div>
         <div class="text-sm text-gray-500">Participants</div>
       </div>
       
-      <div class="bg-gray-50 p-4 rounded-lg text-center">
+      <div class="bg-gray-100 border border-gray-200 p-4 rounded-lg text-center">
         <div class="text-2xl font-bold text-purple-600">
           {formatTime(Math.floor(timeElapsed / participants.length))}
         </div>
         <div class="text-sm text-gray-500">Avg. Time Per Person</div>
       </div>
       
-      <div class="bg-gray-50 p-4 rounded-lg text-center">
+      <div class="bg-gray-100 border border-gray-200 p-4 rounded-lg text-center">
         <div class="text-2xl font-bold text-indigo-600">
           {new Date().toLocaleDateString()}
         </div>
@@ -52,7 +52,7 @@
     
     <h2 class="text-xl font-semibold mb-4">Standup Participants</h2>
     
-    <div class="space-y-2 grid gap-2 max-h-[300px] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto rounded-lg shadow-md p-5 bg-gray-50">
+    <div class="space-y-2 grid gap-2 max-h-[300px] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto rounded-lg shadow-md p-5 bg-gray-100 border border-gray-200">
       {#each participants as participant}
         <ParticipantCard 
           participant={participant}
