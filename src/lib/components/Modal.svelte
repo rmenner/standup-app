@@ -89,6 +89,10 @@
   <div
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 overflow-y-auto"
     on:click={handleBackdropClick}
+    on:keydown={(e) => e.key === 'Enter' && handleBackdropClick(e)}
+    role="dialog"
+    aria-modal="true"
+    tabindex="0"
     transition:fade={{ duration: 150 }}
   >
     <div
