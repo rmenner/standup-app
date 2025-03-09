@@ -127,15 +127,27 @@
     };
     
     // For demo purposes, store in localStorage
-    const previousStandups = JSON.parse(localStorage.getItem('previousStandups') || '[]');
-    previousStandups.push(standupSummary);
-    localStorage.setItem('previousStandups', JSON.stringify(previousStandups));
+    if (browser) {
+      try {
+        const previousStandups = JSON.parse(localStorage.getItem('previousStandups') || '[]');
+        previousStandups.push(standupSummary);
+        localStorage.setItem('previousStandups', JSON.stringify(previousStandups));
+      } catch (error) {
+        console.error('Error saving standup summary to localStorage:', error);
+      }
+    }
   }
   
   function resetStandup() {
     // Clear the stored participants and go back to home
-    localStorage.removeItem('standupParticipants');
-    localStorage.removeItem('standupParticipants');
+    if (browser) {
+      try {
+        localStorage.removeItem('standupParticipants');
+        // Note: The duplicate line was removed
+      } catch (error) {
+        console.error('Error removing standupParticipants from localStorage:', error);
+      }
+    }
     goto('/');
   }
   
@@ -148,7 +160,13 @@
     participants = event.detail.participants;
     
     // Update localStorage with the new participants list
-    localStorage.setItem('standupParticipants', JSON.stringify(participants));
+    if (browser) {
+      try {
+        localStorage.setItem('standupParticipants', JSON.stringify(participants));
+      } catch (error) {
+        console.error('Error updating participants in localStorage:', error);
+      }
+    }
   }
   function openOrUpdateGithubWindow(username) {
     const url = `https://github.com/orgs/AlaskaAirlines/projects/19/views/99?sliceBy%5Bvalue%5D=${username}`;

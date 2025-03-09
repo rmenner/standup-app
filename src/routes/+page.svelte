@@ -1,21 +1,57 @@
 <script>
   import { goto } from '$app/navigation';
   import TeamMemberSelector from '$lib/components/TeamMemberSelector.svelte';
+  import { onMount } from 'svelte';
   
   /** @type {import('./$types').PageData} */
   export let data;
   
-  // Save all team members to localStorage when they're loaded
-  $: if (data.members && data.members.length > 0) {
-    localStorage.setItem('allTeamMembers', JSON.stringify(data.members));
-  }
+  // Flag to check if we're in a browser environment
+  const browser = typeof window !== 'undefined';
   
   /** @type {number[]} */
   let selectedMembers = [];
   let isLoading = false;
   
+  // Use onMount to ensure localStorage operations only happen in the browser
+  onMount(() => {
+    // Save all team members to localStorage when they're loaded
+    if (data.members && data.members.length > 0) {
+      localStorage.setItem('allTeamMembers', JSON.stringify(data.members));
+    }
+    
+    // Try to load previously selected members from localStorage
+    try {
+      const savedMembersJson = localStorage.getItem('lastSelectedMembers');
+      if (savedMembersJson) {
+        const parsedMembers = JSON.parse(savedMembersJson);
+        if (Array.isArray(parsedMembers)) {
+          selectedMembers = parsedMembers;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
+    }
+  });
+  
+  // Safely save data to localStorage with error handling
+  function safelyStoreInLocalStorage(key, value) {
+    if (!browser) return;
+    
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error saving to localStorage (${key}):`, error);
+    }
+  }
+  
   function handleSelectionChange(event) {
     selectedMembers = event.detail.selectedIds;
+    
+    // Save selection to localStorage when it changes
+    if (browser) {
+      safelyStoreInLocalStorage('lastSelectedMembers', selectedMembers);
+    }
   }
   
   function handleStartStandup(event) {
@@ -28,11 +64,12 @@
     participantsToSave = [...participantsToSave].sort(() => Math.random() - 0.5);
     
     // Store the randomized members and redirect to the standup page
-    localStorage.setItem('standupParticipants', JSON.stringify(participantsToSave));
+    if (browser) {
+      safelyStoreInLocalStorage('standupParticipants', participantsToSave);
+    }
     
     goto('/standup');
   }
-  
 </script>
 
 <div class="container mx-auto px-4 py-8">
