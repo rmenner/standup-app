@@ -144,23 +144,4 @@
     }
   }
   
-  .attribution-dialog h3 {
-    margin-top: 0;
-    color: #333;
-  }
-  
-  .close-button {
-    margin-top: 15px;
-    padding: 8px 16px;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .close-button:hover {
-    background-color: #2563eb;
-  }
 </style>
