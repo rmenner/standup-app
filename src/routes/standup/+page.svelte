@@ -16,6 +16,7 @@
   let timerInterval = null;
   let timeElapsed = 0;
   let currentTimeElapsed = 0;
+  let participantsTotalTime = 0;
   let meetingCompleted = false;
   let githubWindow = null;
   let currentUsername = '';
@@ -92,6 +93,8 @@
   }
   
   function nextParticipant() {
+    // Add current participant's time to the total participant time
+    participantsTotalTime += currentTimeElapsed;
     
     if (currentParticipantIndex < participants.length - 1) {
       currentParticipantIndex++;
@@ -196,6 +199,9 @@
   }
   
   function startTriageStep() {  
+    // Add last participant's time to the total participant time
+    participantsTotalTime += currentTimeElapsed;
+    
     // Set triage mode
     inTriageStep = true;
     
@@ -275,6 +281,7 @@
       <MeetingSummary
         {timeElapsed}
         {participants}
+        participantsTotalTime={participantsTotalTime}
         onReset={resetStandup}
       />
     </div>

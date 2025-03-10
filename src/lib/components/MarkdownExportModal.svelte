@@ -5,6 +5,7 @@
   export let isOpen = false;
   export let timeElapsed = 0;
   export let participants = [];
+  export let participantsTotalTime = 0;
   
   let copied = false;
   let markdownContent = '';
@@ -20,13 +21,13 @@
   function generateMarkdown() {
     const date = new Date().toLocaleDateString();
     const totalParticipants = participants.length;
-    const avgTimePerPerson = Math.floor(timeElapsed / totalParticipants);
+    const avgTimePerPerson = Math.floor(participantsTotalTime / totalParticipants);
     
     let markdown = `# Standup Summary - ${date}\n\n`;
     markdown += `## Meeting Statistics\n`;
     markdown += `- **Total Time:** ${formatTime(timeElapsed)}\n`;
     markdown += `- **Participants:** ${totalParticipants}\n`;
-    markdown += `- **Avg. Time Per Person:** ${formatTime(avgTimePerPerson)}\n\n`;
+    markdown += `- **Avg. Time Per Person:** ${formatTime(avgTimePerPerson)} _(excludes triage and parking lot phases)_\n\n`;
     
     markdown += `## Participants\n\n`;
     
@@ -56,7 +57,7 @@
       });
   }
   
-  // Update markdown content whenever participants or timeElapsed changes
+  // Update markdown content whenever participants, timeElapsed, or participantsTotalTime changes
   $: markdownContent = generateMarkdown();
   
   // Close modal handler

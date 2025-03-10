@@ -3,6 +3,7 @@
   import MarkdownExportModal from './MarkdownExportModal.svelte';
   
   export let timeElapsed = 0;
+  export let participantsTotalTime = 0; // Total time spent only on participant updates
   export let participants = [];
   export let onReset;
   
@@ -37,7 +38,8 @@
       
       <div class="bg-gray-100 border border-gray-200 p-4 rounded-lg text-center">
         <div class="text-2xl font-bold text-purple-600">
-          {formatTime(Math.floor(timeElapsed / participants.length))}
+          <!-- Using participantsTotalTime for more accurate calculation (excludes triage and parking lot time) -->
+          {formatTime(Math.floor(participantsTotalTime / participants.length))}
         </div>
         <div class="text-sm text-gray-500">Avg. Time Per Person</div>
       </div>
@@ -81,5 +83,6 @@
 <MarkdownExportModal
   bind:isOpen={showExportModal}
   {timeElapsed}
+  {participantsTotalTime}
   {participants}
 />
