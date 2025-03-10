@@ -171,7 +171,7 @@
   function openOrUpdateGithubWindow(username) {
     const url = `https://github.com/orgs/AlaskaAirlines/projects/19/views/99?sliceBy%5Bvalue%5D=${username}`;
     const windowWidth = Math.round(window.screen.width * 0.65);
-    const windowHeight = Math.round(window.screen.height * 0.65);
+    const windowHeight = Math.round(window.screen.height * 0.95);
     const left = Math.round((window.screen.width - windowWidth) / 2);
     const top = Math.round((window.screen.height - windowHeight) / 2);
     
@@ -204,7 +204,7 @@
     if (!githubWindow || githubWindow.closed) {
       // Open a new window if it doesn't exist or is closed
       const windowWidth = Math.round(window.screen.width * 0.65);
-      const windowHeight = Math.round(window.screen.height * 0.65);
+      const windowHeight = Math.round(window.screen.height * 0.90);
       const left = Math.round((window.screen.width - windowWidth) / 2);
       const top = Math.round((window.screen.height - windowHeight) / 2);
       
@@ -248,7 +248,7 @@
     if (!githubWindow || githubWindow.closed) {
       // Open a new window if it doesn't exist or is closed
       const windowWidth = Math.round(window.screen.width * 0.65);
-      const windowHeight = Math.round(window.screen.height * 0.65);
+      const windowHeight = Math.round(window.screen.height * 0.90);
       const left = Math.round((window.screen.width - windowWidth) / 2);
       const top = Math.round((window.screen.height - windowHeight) / 2);
       
