@@ -27,7 +27,7 @@
     markdown += `## Meeting Statistics\n`;
     markdown += `- **Total Time:** ${formatTime(timeElapsed)}\n`;
     markdown += `- **Participants:** ${totalParticipants}\n`;
-    markdown += `- **Avg. Time Per Person:** ${formatTime(avgTimePerPerson)} _(excludes triage and parking lot phases)_\n\n`;
+    markdown += `- **Avg. Time Per Person:** ${formatTime(avgTimePerPerson)} \n\n`;
     
     markdown += `## Participants\n\n`;
     
