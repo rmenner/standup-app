@@ -22,6 +22,7 @@
   let currentUsername = '';
   let inTriageStep = false;
   let inParkingLotStep = false;
+  let isPaused = false;
   
   // Default time limits (in seconds)
   const defaultTimeLimit = 120; // 2 minutes per person
@@ -71,14 +72,17 @@
   });
   
   function startTimer() {
-    timerInterval = setInterval(() => {
-      const now = new Date();
-      timeElapsed = Math.floor((now - meetingStartTime) / 1000);
-      
-      if (currentStartTime) {
-        currentTimeElapsed = Math.floor((now - currentStartTime) / 1000);
-      }
-    }, 1000);
+    // Only start the timer if it's not paused
+    if (!isPaused) {
+      timerInterval = setInterval(() => {
+        const now = new Date();
+        timeElapsed = Math.floor((now - meetingStartTime) / 1000);
+        
+        if (currentStartTime) {
+          currentTimeElapsed = Math.floor((now - currentStartTime) / 1000);
+        }
+      }, 1000);
+    }
   }
   
   function startParticipantTimer() {
@@ -169,6 +173,31 @@
       } catch (error) {
         console.error('Error updating participants in localStorage:', error);
       }
+    }
+  }
+  
+  /**
+   * Handle play/pause toggle
+   */
+  function handleTogglePause() {
+    isPaused = !isPaused;
+    
+    if (isPaused) {
+      // Pause the timer by clearing the interval
+      clearInterval(timerInterval);
+    } else {
+      // Resume the timer
+      // Adjust the meeting start time to account for the paused duration
+      const now = new Date();
+      meetingStartTime = new Date(now.getTime() - (timeElapsed * 1000));
+      
+      // Also adjust the current participant's start time
+      if (currentTimeElapsed > 0) {
+        currentStartTime = new Date(now.getTime() - (currentTimeElapsed * 1000));
+      }
+      
+      // Restart the timer
+      startTimer();
     }
   }
   function openOrUpdateGithubWindow(username) {
@@ -297,8 +326,10 @@
         {inTriageStep}
         {inParkingLotStep}
         {availableMembers}
+        {isPaused}
         onNext={inParkingLotStep ? completeParkingLot : (inTriageStep ? completeTriage : nextParticipant)}
         onPrevious={previousParticipant}
+        on:togglePause={handleTogglePause}
         on:participantsUpdated={handleParticipantsUpdated} />
     </div>
   {/if}

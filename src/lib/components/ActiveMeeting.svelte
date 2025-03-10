@@ -12,6 +12,7 @@
   export let warningTime = 30;
   export let inTriageStep = false;
   export let inParkingLotStep = false;
+  export let isPaused = false;
   export let onNext;
   export let onPrevious;
   export let availableMembers = []; // All team members that can be added as late participants
@@ -47,6 +48,10 @@
       participants = updatedParticipants;
     }
   }
+
+  function handlePlayPauseClick() {
+    dispatch('togglePause');
+  }
 </script>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
@@ -67,7 +72,8 @@
     <div class="grid grid-cols-1 gap-2">
      
       {#if !inTriageStep && !inParkingLotStep}
-      <div class="grid-cols-1 flex justify-end">
+      <div class="grid-cols-1 flex justify-end space-x-2">
+      
         <button
           on:click={openLateParticipantModal}
           class="px-3 py-1 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 cursor-pointer"
@@ -76,12 +82,30 @@
         </button>
       </div>
       {/if}
-      <div class="grid-cols-1">
+      <div class="grid-cols-1 flex justify-end">
         <Timer 
           time={timeElapsed} 
           label="Meeting Duration:" 
           size="normal"
         />
+        <button
+        on:click={handlePlayPauseClick}
+        class="ml-2 px-2 py-1 {isPaused ? 'bg-blue-500 hover:bg-blue-700' : 'bg-blue-700 hover:bg-blue-800 '} text-white rounded-lg text-sm font-medium cursor-pointer flex items-center"
+      >
+        {#if isPaused}
+          <!-- Play icon - simple triangle -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 4.5v11l12-5.5L4 4.5z" />
+          </svg>
+          
+        {:else}
+          <!-- Pause icon - simple two bars -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3h4v14H5V3zm6 0h4v14h-4V3z" />
+          </svg>
+          
+        {/if}
+      </button>
       </div>
       
     </div>
