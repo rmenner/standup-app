@@ -114,7 +114,7 @@
               id={`member-${member.id}`}
               checked={selectedMembers.includes(member.id)}
               class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              on:click|stopPropagation={() => {}} 
+              on:click|stopPropagation={() => toggleMemberSelection(member.id)} 
             />
             
             <img 
