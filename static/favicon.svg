@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="100" height="100"><svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- Adjusted circles to better fill space -->
+    <circle cx="35" cy="60" r="30" fill="#4A90E2" fill-opacity="0.8"></circle>
+    <circle cx="65" cy="60" r="30" fill="#357ABD" fill-opacity="0.8"></circle>
+    <circle cx="50" cy="35" r="30" fill="#2C5E9E" fill-opacity="0.8"></circle>
+    
+    <!-- Enlarged Airplane Icon -->
+    <path d="M50 10 L75 60 L50 52 L25 60 Z" fill="#FFFFFF" stroke="#2C5E9E" stroke-width="2"></path>
+    <line x1="50" y1="52" x2="50" y2="85" stroke="#2C5E9E" stroke-width="2"></line>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
