@@ -1,5 +1,5 @@
 import { Octokit } from 'octokit';
-import { GITHUB_TOKEN } from '$env/static/private';
+import { GITHUB_TOKEN, GITHUB_ORG, GITHUB_TEAM } from '$env/static/private';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
@@ -10,8 +10,8 @@ export async function load() {
     });
 
     // Configure these variables based on your team
-    const org = 'AlaskaAirlines';
-    const team = 'auro-team';  // Replace with the actual team slug
+    const org = GITHUB_ORG;
+    const team = GITHUB_TEAM;
     
     // First try to get team members if team name is provided
     let members = [];
@@ -26,8 +26,9 @@ export async function load() {
         
         if (targetTeam) {
           // Get team members
-          const teamMembersResponse = await octokit.request('GET /teams/{team_id}/members', {
-            team_id: targetTeam.id
+          const teamMembersResponse = await octokit.request('GET /orgs/{org}/teams/{team_slug}/members', {
+            org: org,
+            team_slug: targetTeam.slug
           });
           
           members = teamMembersResponse.data;

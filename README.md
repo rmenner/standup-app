@@ -31,9 +31,11 @@ cd standup-app
 npm install
 ```
 
-3. Create a `.env` file in the root directory with your GitHub token:
+3. Create a `.env` file in the root directory with your GitHub configuration:
 ```
-GITHUB_TOKEN=your_github_token_here
+GITHUB_TOKEN=github_token
+GITHUB_ORG=github_organization
+GITHUB_TEAM=github_team_slug
 ```
 
 4. Start the development server
